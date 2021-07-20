@@ -1,0 +1,63 @@
+version: "3.8"
+services:
+
+  # PHP service
+  php-fpm:
+    build:
+      context: .
+      dockerfile: ./docker/Dockerfile
+    working_dir: /var/www
+    restart: always
+    volumes:
+      - ./:/var/www
+    depends_on:
+      - mysql
+    networks:
+      - php-fpm-network
+
+  # MySQL database service
+  mysql:
+    image: mariadb:10.5.8
+    restart: always
+    ports:
+      - "3306:3306"
+    #    volumes:
+    #      - mysql-data:/var/lib/mysql:rw
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: test
+      MYSQL_USER: test
+      MYSQL_PASSWORD: test
+    networks:
+      - php-fpm-network
+
+  # adminer service
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - "8080:8080"
+    networks:
+      - php-fpm-network
+
+  # Nginx service
+  nginx:
+    image: nginx:alpine
+    restart: always
+    links:
+      - php-fpm
+    ports:
+      - 8000:80
+    volumes:
+      - ./docker/config/nginx/conf.d/default.conf:/etc/nginx/conf.d/default.conf
+    depends_on:
+      - mysql
+    networks:
+      - php-fpm-network
+
+networks:
+  php-fpm-network:
+    driver: bridge
+
+#volumes:
+#  mysql-data: ~

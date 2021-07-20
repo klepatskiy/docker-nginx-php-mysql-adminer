@@ -1,0 +1,9 @@
+{
+  "name": "klepatskiy/docker-php",
+  "description": "docker for testing",
+  "config": {
+    "platform": {
+      "php": "8.0"
+    }
+  }
+}
