@@ -1,37 +1,60 @@
-# Докер + nginx + mysql + php + adminer
+# Docker + nginx + mysql + php + adminer
 
-basic set for creating applications
+Basic set for creating web-applications.
 
 includes:
-php
-mysql
-nginx
-adminer
+- php-fpm
+- mysql
+- nginx
+- adminer
 
-ports:
-nginx :80
-adminer :8080
+nginx :8000 http://localhost:8000
 
-mysql user - test
-mysql user - test
+adminer :8080 http://localhost:8080/?server=mysql&username=test
+
+**mysql:**
+  - host: mysql
+  - login: test
+  - password: test
 
 
-First start docker
+## Usage
+
 ```
+clone project from console, and first start docker:
+
+$ git clone https://github.com/klepatskiy/docker-nginx-php-mysql-adminer.git
+$ cd docker-nginx-php-mysql-adminer
+$ docker-compose up --build
+
+All done. 
+Open browser http://localhost:8000
+
+Edit index.php, in current directory.
+
+Edit database: http://localhost:8080/?server=mysql&username=test
+
+```
+
+**Useful commands**
+
+First start docker 
+
+```sh
 docker-compose up --build
 ```
 
 start docker
-```
+```sh
 docker-compose up
 ```
 
 list container
-```
+```sh
 docker ps
 ```
 
 Stop docker
-```
+```sh
 docker-compose down
 ```
